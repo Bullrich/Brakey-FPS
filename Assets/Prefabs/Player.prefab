@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4704267952391588}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4668862290045584}
   - component: {fileID: 33407273785714328}
   - component: {fileID: 23625257279307452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,9 +60,10 @@ GameObject:
   - component: {fileID: 114684486486676934}
   - component: {fileID: 114822347246022120}
   - component: {fileID: 153077745093319118}
-  m_Layer: 0
+  - component: {fileID: 114950205521575836}
+  m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +76,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4765811757186250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pistola
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +95,7 @@ GameObject:
   - component: {fileID: 124117631429578936}
   - component: {fileID: 92839876817846888}
   - component: {fileID: 81634402443527228}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +110,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4930751878762570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +127,7 @@ GameObject:
   - component: {fileID: 4638589840822818}
   - component: {fileID: 33246689413751710}
   - component: {fileID: 23443289029999048}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +142,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4782057589181342}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +157,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4435319345224208}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,6 +530,8 @@ MonoBehaviour:
   - {fileID: 114138796610485708}
   - {fileID: 20895065112161996}
   - {fileID: 81634402443527228}
+  - {fileID: 114950205521575836}
+  remoteLayerMask: RemotePlayer
 --- !u!114 &114822347246022120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -548,6 +551,25 @@ MonoBehaviour:
   m_MovementThreshold: 0.001
   m_InterpolateRotation: 0.3
   m_InterpolateMovement: 0
+--- !u!114 &114950205521575836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1121887811361472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd44b5f8c58b48b8937718a36f89ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon:
+    name: Weapon
+    damage: 10
+    range: 200
+  shootMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  cam: {fileID: 20895065112161996}
 --- !u!124 &124117631429578936
 Behaviour:
   m_ObjectHideFlags: 1

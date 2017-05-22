@@ -12,16 +12,17 @@ namespace game
         [SerializeField]
         Behaviour[] componentsToDisable;
 
+        [SerializeField]
+        string remoteLayerMask = "RemotePlayer";
+
         Camera sceneCamera;
 
         void Start()
         {
             if (!isLocalPlayer)
             {
-                for (int i = 0; i < componentsToDisable.Length; i++)
-                {
-                    componentsToDisable[i].enabled = false;
-                }
+                DisableComponents();
+                AssignRemoteLayer();
             }
             else
             {
@@ -29,6 +30,26 @@ namespace game
                 if (sceneCamera != null)
                     sceneCamera.gameObject.SetActive(false);
             }
+            RegisterPlayer();
+        }
+
+        void RegisterPlayer()
+        {
+            string _id = "Player " + GetComponent<NetworkIdentity>().netId;
+            transform.name = _id;
+        }
+
+        void DisableComponents()
+        {
+            for (int i = 0; i < componentsToDisable.Length; i++)
+            {
+                componentsToDisable[i].enabled = false;
+            }
+        }
+
+        void AssignRemoteLayer()
+        {
+            gameObject.layer = LayerMask.NameToLayer(remoteLayerMask);
         }
 
         void OnDisable()
