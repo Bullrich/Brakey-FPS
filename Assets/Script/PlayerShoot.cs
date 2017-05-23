@@ -41,14 +41,17 @@ namespace game
             {
                 // We hit something
                 if (_hit.collider.tag == player_tag)
-                    CmdPlayerShot(_hit.collider.name);
+                    CmdPlayerShot(_hit.collider.name, weapon.damage);
             }
         }
 
         [Command]
-        void CmdPlayerShot(string _id)
+        void CmdPlayerShot(string _playerID, int _damage)
         {
-            Debug.Log(_id + "has been shot.");
+            Debug.Log(_playerID + "has been shot.");
+
+            Player _player = GameManager.GetPlayer(_playerID);
+            _player.RpcTakeDamage(_damage);
         }
 
     }
