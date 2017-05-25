@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(ConfigurableJoint))]
 [SelectionBaseAttribute]
 public class PlayerController : MonoBehaviour
@@ -21,13 +22,16 @@ public class PlayerController : MonoBehaviour
     jointSpring = 20f,
     jointMaxForce = 40f;
 
+    // Component caching
     private PlayerMotor motor;
     private ConfigurableJoint joint;
+    private Animator animator;
 
     private void Start()
     {
         motor = GetComponent<PlayerMotor>();
         joint = GetComponent<ConfigurableJoint>();
+        animator = GetComponent<Animator>();
         SetJointSettings(jointSpring);
     }
 
@@ -40,14 +44,17 @@ public class PlayerController : MonoBehaviour
     {
 
         // Calculate movement velocity as a 3D vector
-        float _xMov = Input.GetAxisRaw("Horizontal");
-        float _zMov = Input.GetAxisRaw("Vertical");
+        float _xMov = Input.GetAxis("Horizontal");
+        float _zMov = Input.GetAxis("Vertical");
 
         Vector3 _moveHorizontal = transform.right * _xMov;
         Vector3 _moveVertical = transform.forward * _zMov;
 
         // Final movement vector
-        Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * speed;
+        Vector3 _velocity = (_moveHorizontal + _moveVertical) * speed;
+
+        // Animate movement
+        animator.SetFloat("ForwardVelocity", _zMov);
 
         // Apply movement
         motor.Move(_velocity);
