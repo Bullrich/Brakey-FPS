@@ -13,7 +13,14 @@ namespace game
         Behaviour[] componentsToDisable;
 
         [SerializeField]
-        string remoteLayerMask = "RemotePlayer";
+        private string
+            remoteLayerMask = "RemotePlayer",
+            dontDrawLayerName = "DontDraw";
+        [SerializeField]
+        private GameObject
+            playerGraphics,
+            playerUiPrefab;
+        private GameObject playerUiInstance;
 
         Camera sceneCamera;
 
@@ -29,6 +36,13 @@ namespace game
                 sceneCamera = Camera.main;
                 if (sceneCamera != null)
                     sceneCamera.gameObject.SetActive(false);
+
+                // Disable player graphics for local player
+                SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
+
+                // Create Player UI
+                playerUiInstance = Instantiate(playerUiPrefab);
+                playerUiInstance.name = playerUiPrefab.name;
             }
 
             GetComponent<Player>().Setup();
@@ -51,6 +65,14 @@ namespace game
             }
         }
 
+        void SetLayerRecursively(GameObject _graphics, int _dontDrawMask)
+        {
+            _graphics.layer = _dontDrawMask;
+
+            foreach (Transform child in _graphics.transform)
+                SetLayerRecursively(child.gameObject, _dontDrawMask);
+        }
+
         void AssignRemoteLayer()
         {
             gameObject.layer = LayerMask.NameToLayer(remoteLayerMask);
@@ -58,10 +80,12 @@ namespace game
 
         void OnDisable()
         {
+            Destroy(playerUiInstance);
+
             if (sceneCamera != null)
                 sceneCamera.gameObject.SetActive(true);
 
-                GameManager.UnRegisterPlayer(transform.name);
+            GameManager.UnRegisterPlayer(transform.name);
         }
     }
 }

@@ -25,6 +25,8 @@ public class PlayerMotor : MonoBehaviour
     private float cameraRotationLimit = 85;
 
     public bool invertedY;
+    [SerializeField]
+    private ParticleSystem[] particles;
 
     private void Start()
     {
@@ -81,6 +83,11 @@ public class PlayerMotor : MonoBehaviour
     public void ApplyThruster(Vector3 _thrusterForce)
     {
         thrusterForce = _thrusterForce;
+        foreach(ParticleSystem ps in particles)
+        if(_thrusterForce != Vector3.zero)
+        ps.Play();
+        else
+        ps.Stop();
     }
     #endregion
 }

@@ -562,7 +562,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294966271
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -874,6 +874,9 @@ MonoBehaviour:
   cam: {fileID: 20895065112161996}
   cameraRotationLimit: 85
   invertedY: 0
+  particles:
+  - {fileID: 198460394946345330}
+  - {fileID: 198547330067510394}
 --- !u!114 &114684486486676934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -913,6 +916,10 @@ MonoBehaviour:
   - {fileID: 114950205521575836}
   - {fileID: 95811973101203166}
   remoteLayerMask: RemotePlayer
+  dontDrawLayerName: DontDraw
+  playerGraphics: {fileID: 1965485721499508}
+  playerUiPrefab: {fileID: 1805238247622492, guid: 7c1939cbe59044fbda9033873ce0ea02,
+    type: 2}
 --- !u!114 &114816405583704812
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1151,7 +1158,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 605804402
+  randomSeed: -1134289425
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3746,7 +3753,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1428798710
+  randomSeed: -1699701474
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6341,7 +6348,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1724354173
+  randomSeed: 971726531
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8918,7 +8925,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1497698484
+  randomSeed: 1525139372
   InitialModule:
     serializedVersion: 3
     enabled: 1
