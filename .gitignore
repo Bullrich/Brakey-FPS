@@ -29,5 +29,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# VSCODE
+# IDEs
 /.vscode
+/.idea
