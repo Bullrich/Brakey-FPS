@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 namespace game
 {
     [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(PlayerController))]
     public class PlayerSetup : NetworkBehaviour
     {
 
@@ -43,6 +44,12 @@ namespace game
                 // Create Player UI
                 playerUiInstance = Instantiate(playerUiPrefab);
                 playerUiInstance.name = playerUiPrefab.name;
+                
+                // Configure PlayerUI
+                PlayerUI ui = playerUiInstance.GetComponent<PlayerUI>();
+                if(ui==null)
+                    Debug.LogError("No PlayerUI component on PlatyerUI prefab.");
+                ui.SetController((GetComponent<PlayerController>()));
             }
 
             GetComponent<Player>().Setup();

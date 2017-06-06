@@ -1,29 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(ConfigurableJoint))]
-[SelectionBaseAttribute]
+[SelectionBase]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    [Range(0.1f, 7f)]
-    private float
-    speed = 5f,
-    lookSensitivity = 3f;
-    [SerializeField]
-    private float thrusterForce = 1000f;
+    [SerializeField] [Range(0.1f, 7f)] private float
+        speed = 5f,
+        lookSensitivity = 3f;
 
-    [HeaderAttribute("Joint Options")]
-    [SerializeField]
-    private float
-    jointSpring = 20f,
-    jointMaxForce = 40f;
+    [SerializeField] private float
+        thrusterForce = 1000f,
+        thrusterFuelBurnSpeed = 0.9f,
+        thrusterFuelRegenSpeed = 0.3f,
+        thrusterFuelAmount = 1f;
+
+    public float GetThrusterFuelAmount()
+    {
+        return thrusterFuelAmount;
+    }
+
+    [SerializeField] private LayerMask environmentMask;
+
+    [Header("Joint Options")] [SerializeField] private float
+        jointSpring = 20f,
+        jointMaxForce = 40f;
 
     // Component caching
     private PlayerMotor motor;
+
     private ConfigurableJoint joint;
     private Animator animator;
 
@@ -40,8 +46,18 @@ public class PlayerController : MonoBehaviour
         Movement();
     }
 
+    private void SetTargetPositionForSpring()
+    {
+        RaycastHit _hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out _hit, 100f, environmentMask))
+            joint.targetPosition = new Vector3(0, -_hit.point.y, 0);
+        else
+            joint.targetPosition = Vector3.zero;
+    }
+
     private void Movement()
     {
+        SetTargetPositionForSpring();
 
         // Calculate movement velocity as a 3D vector
         float _xMov = Input.GetAxis("Horizontal");
@@ -76,20 +92,33 @@ public class PlayerController : MonoBehaviour
 
         //Calculate thruster force
         Vector3 _thrusterForce = Vector3.zero;
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && thrusterFuelAmount > 0f)
         {
-            _thrusterForce = Vector3.up * thrusterForce;
-            SetJointSettings(0f);
-        }else{
+            thrusterFuelAmount -= thrusterFuelBurnSpeed * Time.deltaTime;
+
+            if (thrusterFuelAmount >= 0.01f)
+            {
+                _thrusterForce = Vector3.up * thrusterForce;
+                SetJointSettings(0f);
+            }
+        }
+        else
+        {
+            thrusterFuelAmount += thrusterFuelRegenSpeed * Time.deltaTime;
+
             SetJointSettings(jointSpring);
         }
+
+        thrusterFuelAmount = Mathf.Clamp(thrusterFuelAmount, 0, 1);
 
         // Apply the thruster force
         motor.ApplyThruster(_thrusterForce);
     }
 
-    private void SetJointSettings(float _jointSpring){
-        joint.yDrive = new JointDrive{
+    private void SetJointSettings(float _jointSpring)
+    {
+        joint.yDrive = new JointDrive
+        {
             positionSpring = _jointSpring,
             maximumForce = jointMaxForce
         };

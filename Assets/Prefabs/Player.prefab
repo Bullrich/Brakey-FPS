@@ -731,6 +731,12 @@ MonoBehaviour:
   speed: 5
   lookSensitivity: 1.58
   thrusterForce: 2000
+  thrusterFuelBurnSpeed: 0.9
+  thrusterFuelRegenSpeed: 0.3
+  thrusterFuelAmount: 1
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 4096
   jointSpring: 15
   jointMaxForce: 40
 --- !u!114 &114249578776053204
@@ -978,7 +984,7 @@ ConfigurableJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_TargetPosition: {x: 0, y: 0, z: 0}
+  m_TargetPosition: {x: 0, y: -1, z: 0}
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3

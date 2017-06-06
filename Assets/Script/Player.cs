@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,21 +8,19 @@ namespace game
 {
     public class Player : NetworkBehaviour
     {
-        [SyncVar]
-        private bool _isDead = false;
+        [SyncVar] private bool _isDead = false;
+
         public bool isDead
         {
             get { return _isDead; }
             protected set { _isDead = value; }
         }
-        [SerializeField]
-        private int maxHealth = 100;
 
-        [SyncVar]
-        private int currentHealth;
+        [SerializeField] private int maxHealth = 100;
 
-        [SerializeField]
-        private Behaviour[] disableOnDeath;
+        [SyncVar] private int currentHealth;
+
+        [SerializeField] private Behaviour[] disableOnDeath;
         private bool[] wasEnabled;
 
         public void Setup()
