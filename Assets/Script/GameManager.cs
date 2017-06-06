@@ -12,12 +12,19 @@ namespace game
         public static GameManager instance;
         public MatchSettings matchSettings;
 
+        [SerializeField] private GameObject sceneCamera;
+
         void Awake()
         {
             if (instance != null)
                 Debug.LogError("There is more than one game manager in the scene!");
             else
                 instance = this;
+        }
+
+        public void SetSceneCameraActive(bool isActive)
+        {
+            sceneCamera.SetActive(isActive);
         }
 
         #region Player tracking
@@ -49,7 +56,7 @@ namespace game
 
             foreach (string _playerID in players.Keys)
             {
-                GUILayout.Label(_playerID + "  -  " + players[_playerID].transform.name);
+                GUILayout.Label(_playerID + "  -  " + players[_playerID].GetCurrentHealth());
             }
 
             GUILayout.EndVertical();

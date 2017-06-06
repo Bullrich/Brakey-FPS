@@ -9,21 +9,17 @@ namespace game
     [RequireComponent(typeof(PlayerController))]
     public class PlayerSetup : NetworkBehaviour
     {
+        [SerializeField] Behaviour[] componentsToDisable;
 
-        [SerializeField]
-        Behaviour[] componentsToDisable;
-
-        [SerializeField]
-        private string
+        [SerializeField] private string
             remoteLayerMask = "RemotePlayer",
             dontDrawLayerName = "DontDraw";
-        [SerializeField]
-        private GameObject
+
+        [SerializeField] private GameObject
             playerGraphics,
             playerUiPrefab;
-        private GameObject playerUiInstance;
 
-        Camera sceneCamera;
+        [HideInInspector] public GameObject playerUiInstance;
 
         void Start()
         {
@@ -34,25 +30,21 @@ namespace game
             }
             else
             {
-                sceneCamera = Camera.main;
-                if (sceneCamera != null)
-                    sceneCamera.gameObject.SetActive(false);
-
                 // Disable player graphics for local player
                 SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
                 // Create Player UI
                 playerUiInstance = Instantiate(playerUiPrefab);
                 playerUiInstance.name = playerUiPrefab.name;
-                
+
                 // Configure PlayerUI
                 PlayerUI ui = playerUiInstance.GetComponent<PlayerUI>();
-                if(ui==null)
+                if (ui == null)
                     Debug.LogError("No PlayerUI component on PlatyerUI prefab.");
                 ui.SetController((GetComponent<PlayerController>()));
             }
 
-            GetComponent<Player>().Setup();
+            GetComponent<Player>().Setup(playerUiInstance);
         }
 
         public override void OnStartClient()
@@ -89,8 +81,7 @@ namespace game
         {
             Destroy(playerUiInstance);
 
-            if (sceneCamera != null)
-                sceneCamera.gameObject.SetActive(true);
+            GameManager.instance.SetSceneCameraActive(true);
 
             GameManager.UnRegisterPlayer(transform.name);
         }
