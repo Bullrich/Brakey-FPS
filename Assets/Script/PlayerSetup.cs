@@ -42,9 +42,9 @@ namespace game
                 if (ui == null)
                     Debug.LogError("No PlayerUI component on PlatyerUI prefab.");
                 ui.SetController((GetComponent<PlayerController>()));
-            }
 
-            GetComponent<Player>().Setup(playerUiInstance);
+                GetComponent<Player>().SetupPlayer();
+            }
         }
 
         public override void OnStartClient()
@@ -72,7 +72,7 @@ namespace game
                 SetLayerRecursively(child.gameObject, _dontDrawMask);
         }
 
-        void AssignRemoteLayer()
+        private void AssignRemoteLayer()
         {
             gameObject.layer = LayerMask.NameToLayer(remoteLayerMask);
         }
@@ -80,8 +80,8 @@ namespace game
         void OnDisable()
         {
             Destroy(playerUiInstance);
-
-            GameManager.instance.SetSceneCameraActive(true);
+            if (isLocalPlayer)
+                GameManager.instance.SetSceneCameraActive(true);
 
             GameManager.UnRegisterPlayer(transform.name);
         }

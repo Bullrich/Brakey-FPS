@@ -30,22 +30,47 @@ namespace game
             deathEffect,
             spawnEffect;
 
+        private bool firstSetup = true;
+
         public int GetCurrentHealth()
         {
             return currentHealth;
         }
 
-        public void Setup(GameObject _playerUI)
+        public void SetupPlayer()
         {
-            wasEnabled = new bool[disableOnDeath.Length];
-            for (int i = 0; i < wasEnabled.Length; i++)
+            if (isLocalPlayer)
             {
-                wasEnabled[i] = disableOnDeath[i].enabled;
+                // Switch cameras
+                GameManager.instance.SetSceneCameraActive(false);
+                GetComponent<PlayerSetup>().playerUiInstance.SetActive(true);
+            }
+
+            CmdBroadCastNewPlayerSetup();
+        }
+
+        [Command]
+        private void CmdBroadCastNewPlayerSetup()
+        {
+            RpcSetupPlayerOnAllClients();
+        }
+
+        [ClientRpc]
+        private void RpcSetupPlayerOnAllClients()
+        {
+            if (firstSetup)
+            {
+                wasEnabled = new bool[disableOnDeath.Length];
+                for (int i = 0; i < wasEnabled.Length; i++)
+                    wasEnabled[i] = disableOnDeath[i].enabled;
+
+                firstSetup = false;
             }
 
             SetDefaults();
         }
 
+        /*
         void Update()
         {
             if (!isLocalPlayer)
@@ -55,7 +80,7 @@ namespace game
             {
                 RpcTakeDamage(999);
             }
-        }
+        }//*/
 
         public void SetDefaults()
         {
@@ -145,7 +170,9 @@ namespace game
             transform.position = _spawnPoint.position;
             transform.rotation = _spawnPoint.rotation;
 
-            SetDefaults();
+            yield return new WaitForSeconds(0.1f);
+
+            SetupPlayer();
 
             Debug.Log(string.Format("{0} respawned.", transform.name));
         }
