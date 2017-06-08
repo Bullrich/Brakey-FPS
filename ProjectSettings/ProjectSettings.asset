@@ -465,8 +465,9 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudServicesEnabled:
+    UNet: 1
+  cloudProjectId: b666e517-00f8-49df-b070-9d3033043398
+  projectName: Brackey's FPS
+  organizationId: javier-bullrich
   cloudEnabled: 0
