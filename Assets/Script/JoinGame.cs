@@ -33,14 +33,14 @@ namespace game
         public void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
         {
             status.text = "";
+            
+            ClearRoomList();
 
             if (!success || matches == null)
             {
                 status.text = "Couldn't get room list";
                 return;
             }
-
-            ClearRoomList();
             foreach (MatchInfoSnapshot _matchInfo in matches)
             {
                 GameObject _roomListItemGo = Instantiate(roomListItemPrefab);
@@ -67,6 +67,7 @@ namespace game
 
         private void JoinRoom(MatchInfoSnapshot _match)
         {
+            ClearRoomList();
             networkManager.matchMaker.JoinMatch(_match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
             //StartCoroutine(WaitForJoin());
             status.text = "Joining";

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using game;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(Animator))]
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if(PauseMenu.IsPaused)
+            return;
         Movement();
     }
 

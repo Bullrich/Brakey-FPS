@@ -31,6 +31,9 @@ namespace game
 
         void Update()
         {
+            if(PauseMenu.IsPaused)
+                return;
+            
             currentWeapon = weaponManager.GetCurrentWeapon();
 
             if (currentWeapon.fireRate <= 0f)
