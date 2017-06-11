@@ -36,7 +36,7 @@ namespace game
             thrusterFuelFill.localScale = new Vector3(1f, _amount, 1f);
         }
 
-        private void TogglePauseMenu()
+        public void TogglePauseMenu()
         {
             pauseMenu.SetActive(!pauseMenu.activeSelf);
             PauseMenu.IsPaused = pauseMenu.activeSelf;

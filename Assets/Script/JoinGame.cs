@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
 using UnityEngine.UI;
+using System.Collections;
 
 // by @Bullrich
 
@@ -26,6 +27,11 @@ namespace game
 
         public void RefreshRoomList()
         {
+            ClearRoomList();
+
+            if (networkManager.matchMaker == null)
+                networkManager.StartMatchMaker();
+
             networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
             status.text = "Loading...";
         }
@@ -33,7 +39,7 @@ namespace game
         public void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
         {
             status.text = "";
-            
+
             ClearRoomList();
 
             if (!success || matches == null)
@@ -69,8 +75,35 @@ namespace game
         {
             ClearRoomList();
             networkManager.matchMaker.JoinMatch(_match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
-            //StartCoroutine(WaitForJoin());
-            status.text = "Joining";
+            StartCoroutine(WaitForJoin());
+        }
+
+        private IEnumerator WaitForJoin()
+        {
+            ClearRoomList();
+
+            int countdown = 15;
+            while (countdown > 0)
+            {
+                status.text = string.Format("JOINING... ({0})", countdown);
+                yield return new WaitForSeconds(1);
+                countdown--;
+            }
+
+            // Failed to connect
+            status.text = "Failed to connect";
+
+            MatchInfo matchInfo = networkManager.matchInfo;
+            if (matchInfo != null)
+            {
+                networkManager.matchMaker.DropConnection(matchInfo.networkId, matchInfo.nodeId, 0,
+                    networkManager.OnDropConnection);
+                networkManager.StopHost();
+            }
+
+            yield return new WaitForSeconds(2);
+
+            RefreshRoomList();
         }
     }
 }
