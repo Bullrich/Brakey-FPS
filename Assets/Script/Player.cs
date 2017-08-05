@@ -26,7 +26,8 @@ namespace game
 
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
 
-        [SerializeField] private GameObject
+        [SerializeField]
+        private GameObject
             deathEffect,
             spawnEffect;
 
@@ -35,6 +36,11 @@ namespace game
         public int GetCurrentHealth()
         {
             return currentHealth;
+        }
+
+        public int GetMaxHealth()
+        {
+            return maxHealth;
         }
 
         public void SetupPlayer()
@@ -109,12 +115,12 @@ namespace game
             }
 
             // Create spawn effect
-            GameObject _spwnEffect = (GameObject) Instantiate(spawnEffect, transform.position, Quaternion.identity);
+            GameObject _spwnEffect = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
             Destroy(_spwnEffect, 3f);
         }
 
         [ClientRpc]
-        public void RpcTakeDamage(int _amount)
+        public void RpcTakeDamage(int _amount, string _damageNetId)
         {
             if (isDead)
                 return;
@@ -124,7 +130,10 @@ namespace game
             Debug.Log(string.Format("{0} now has {1} health.", transform.name, currentHealth));
 
             if (currentHealth <= 0)
+            {
                 Die();
+                GameManager.instance.SetScore(_damageNetId);
+            }
         }
 
         private void Die()
@@ -147,7 +156,7 @@ namespace game
                 _col.enabled = false;
 
             // Instatiate death effect
-            GameObject _gfxIns = (GameObject) Instantiate(deathEffect, transform.position, Quaternion.identity);
+            GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(_gfxIns, 3f);
 
             // Switch cameras

@@ -11,11 +11,13 @@ namespace game
     {
         [SerializeField] Behaviour[] componentsToDisable;
 
-        [SerializeField] private string
+        [SerializeField]
+        private string
             remoteLayerMask = "RemotePlayer",
             dontDrawLayerName = "DontDraw";
 
-        [SerializeField] private GameObject
+        [SerializeField]
+        private GameObject
             playerGraphics,
             playerUiPrefab;
 

@@ -7,11 +7,14 @@ using UnityEngine;
 [SelectionBase]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] [Range(0.1f, 7f)] private float
+    [SerializeField]
+    [Range(0.1f, 7f)]
+    private float
         speed = 5f,
         lookSensitivity = 3f;
 
-    [SerializeField] private float
+    [SerializeField]
+    private float
         thrusterForce = 1000f,
         thrusterFuelBurnSpeed = 0.9f,
         thrusterFuelRegenSpeed = 0.3f,
@@ -24,7 +27,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask environmentMask;
 
-    [Header("Joint Options")] [SerializeField] private float
+    [Header("Joint Options")]
+    [SerializeField]
+    private float
         jointSpring = 20f,
         jointMaxForce = 40f;
 
@@ -48,11 +53,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Cursor.lockState != CursorLockMode.None)
                 Cursor.lockState = CursorLockMode.None;
-            
+
             motor.Move(Vector3.zero);
             motor.Rotate(Vector3.zero);
             motor.RotateCamera(0f);
-            
+
             return;
         }
 

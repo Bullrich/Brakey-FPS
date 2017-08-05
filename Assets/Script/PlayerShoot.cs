@@ -16,6 +16,10 @@ namespace game
 
         [SerializeField] private Camera cam;
 
+        string _netID;
+
+        private string _playerID;
+
         private WeaponManager weaponManager;
 
         private void Start()
@@ -27,13 +31,14 @@ namespace game
             }
 
             weaponManager = GetComponent<WeaponManager>();
+            _netID = GetComponent<NetworkIdentity>().netId.ToString();
         }
 
         void Update()
         {
-            if(PauseMenu.IsPaused)
+            if (PauseMenu.IsPaused)
                 return;
-            
+
             currentWeapon = weaponManager.GetCurrentWeapon();
 
             if (currentWeapon.fireRate <= 0f)
@@ -74,7 +79,7 @@ namespace game
         [ClientRpc]
         private void RpcDoHitEffect(Vector3 _pos, Vector3 _normal)
         {
-            GameObject _hitEffect = (GameObject)Instantiate(weaponManager.GetCurrentGraphics().hitEffectPrefab, 
+            GameObject _hitEffect = (GameObject)Instantiate(weaponManager.GetCurrentGraphics().hitEffectPrefab,
                 _pos, Quaternion.LookRotation(_normal));
             //TODO: Create a object pooling
             Destroy(_hitEffect, 2f);
@@ -90,12 +95,12 @@ namespace game
         [Client]
         private void Shoot()
         {
-            if(!isLocalPlayer)
-            return;
-            
+            if (!isLocalPlayer)
+                return;
+
             // We are shooting, call the OnShoot method on the server
             CmdOnShoot();
-          
+
             RaycastHit _hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range,
                 shootMask))
@@ -103,7 +108,7 @@ namespace game
                 // We hit something
                 if (_hit.collider.tag == player_tag)
                     CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
-                
+
                 // We hit something, call on hit method from the server
                 CmdOnHit(_hit.point, _hit.normal);
             }
@@ -115,7 +120,7 @@ namespace game
             Debug.Log(_playerID + "has been shot.");
 
             Player _player = GameManager.GetPlayer(_playerID);
-            _player.RpcTakeDamage(_damage);
+            _player.RpcTakeDamage(_damage, _netID);
         }
     }
 }
