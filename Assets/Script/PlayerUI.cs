@@ -17,10 +17,12 @@ namespace game
         [SerializeField] private GameObject pauseMenu;
 
         public Text scoreText, winnerText;
+        string netId;
 
-        public void SetController(PlayerController _controller)
+        public void SetController(PlayerController _controller, string _netId)
         {
             controller = _controller;
+            netId = _netId;
             player = _controller.gameObject.GetComponent<Player>();
         }
 
@@ -70,6 +72,10 @@ namespace game
             winnerText.text = string.Format("{0} is the winner!", winnerName);
             Invoke("ExitGame", 3f);
             hasWinner = true;
+            if (winnerName.Replace("Player ", "") == netId)
+                AchievmentManager.instance.ShowAchievement("win");
+            else
+            AchievmentManager.instance.ShowAchievement("finish");
         }
 
         void ExitGame()

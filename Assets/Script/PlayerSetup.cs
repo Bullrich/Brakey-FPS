@@ -43,7 +43,7 @@ namespace game
                 PlayerUI ui = playerUiInstance.GetComponent<PlayerUI>();
                 if (ui == null)
                     Debug.LogError("No PlayerUI component on PlatyerUI prefab.");
-                ui.SetController((GetComponent<PlayerController>()));
+                ui.SetController((GetComponent<PlayerController>()), GetComponent<NetworkIdentity>().netId.ToString());
 
                 GetComponent<Player>().SetupPlayer();
             }

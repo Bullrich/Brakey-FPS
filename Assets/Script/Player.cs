@@ -71,6 +71,7 @@ namespace game
                     wasEnabled[i] = disableOnDeath[i].enabled;
 
                 firstSetup = false;
+                AchievmentManager.instance.ShowAchievement("start");
             }
 
             SetDefaults();
@@ -149,6 +150,8 @@ namespace game
             {
                 disableGameObjectsOnDeath[i].SetActive(false);
             }
+
+            AchievmentManager.instance.ShowAchievement("die");
 
             // Disable the collider
             Collider _col = GetComponent<Collider>();
