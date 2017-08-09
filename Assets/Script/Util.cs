@@ -5,6 +5,7 @@
 namespace game
 {
 	public class Util {
+		// RECURSION
 		public static void SetLayerRecursively(GameObject _obj, int _newLayer)
 		{
 			if (_obj == null)

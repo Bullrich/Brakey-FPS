@@ -19,6 +19,7 @@ namespace game
         string _netID;
 
         private string _playerID;
+        private AudioSource audio;
 
         private WeaponManager weaponManager;
 
@@ -30,6 +31,7 @@ namespace game
                 this.enabled = false;
             }
 
+            audio = GetComponent<AudioSource>();
             weaponManager = GetComponent<WeaponManager>();
             _netID = GetComponent<NetworkIdentity>().netId.ToString();
         }
@@ -95,6 +97,7 @@ namespace game
         [Client]
         private void Shoot()
         {
+            audio.Play();
             if (!isLocalPlayer)
                 return;
 

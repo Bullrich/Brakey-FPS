@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 
 namespace game
 {
+    [RequireComponent(typeof(AudioSource))]
     public class WeaponManager : NetworkBehaviour
     {
         [SerializeField] private PlayerWeapon primaryWeapon;
